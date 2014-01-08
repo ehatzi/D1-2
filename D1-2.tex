@@ -1,0 +1,252 @@
+\documentclass[external]{20120615_deliverable_template_ukob}
+
+\usepackage{xspace}
+\usepackage{amsmath,amsthm,amssymb,url,color}
+\theoremstyle{definition}
+\newtheorem{example}{Example}
+\usepackage{xcolor}
+\usepackage{color, colortbl}
+%\usepackage{showkeys}
+
+\LGtitle{\LiveGovThirtyTitleFonts \textbf{D1.2 - Mobile Sensor App with Mining Functionality} }
+%\LGnumber{WP.NR} % e.g 6.7 no letters D or ID
+
+\LGnumber{1.2}
+
+\LGwp{WP1 - Reality Sensing and Mining}
+
+\LGdissemination{PU - Public}
+
+\LGcontractdate{Month 27, March 2014}
+
+\LGactualdate{Month 26, February 2014}
+
+\LGtask{T1.1, T1.2, T1.3}
+
+\LGtype{Prototype}
+
+%\LGnature{$<$ Report $|$ Prototype $|$ Demonstrator $|$ Other $>$}
+
+%\LGapproved % activate only if approved
+\LGfinal
+
+\LGversion{12}
+%\LGstaffmonths{Resources spent on the deliverable}
+
+%\LGdistribution{WP leaders, PMB members, European Commission}
+
+%\LGkeywords{}
+
+
+%\LGabstract{Put abstract here (separate paragraphs using
+%{\tt\char92 par}.)}
+\LGabstract{ 
+
+\TODO{Add abstract}
+
+%  This deliverable describes the mobile sensor mining component.
+%  Along with this document we supply the source code of the
+%  components, documentation (javadoc), and pre-compiled packages for
+%  direct installation and testing on mobile devices.  
+
+}
+
+%\LGhistory{01}{2011-10-01}{First draft}{Yiannis Kompatsiaris}
+%\LGhistory{02}{2011-10-02}{Modifications}{Sotiris Diplaris}
+%\LGhistory{03}{2011-10-03}{Further Modifications \& Corrections}{Sotiris Diplaris}
+%\LGhistory{04}{2011-10-05}{Further Modifications \& Corrections}{Sotiris Diplaris}
+
+
+%------------------------ macro for change portrait to landscape
+\usepackage{calc,graphicx,pdflscape,eso-pic} % needed for printing
+                                             % headers and footers
+\newlength\landscapewidth
+\newlength\landscapeheight
+\newcommand\landscapepagestyle{ % command which prepare page
+                                % for landscape printing,
+                                % change to landscape is
+                                % achieved by pdflscape
+\clearpage \thispagestyle{empty}
+\setlength\landscapewidth{247mm}
+\setlength\landscapeheight{161mm}
+\AddToShipoutPicture*{\AtPageCenter{ % this make "layer" for
+                                     % printing the header and footer
+\rotatebox[origin=c]{90}{
+\hspace*{-2em} % for adjusting position of
+               % header and footer
+\parbox{\landscapewidth}{\vskip-.57\landscapeheight
+%\centerline{\WEKNOWIT \hfill \textbf{\Large \bf{IDx.x - V0} \normalsize }} %header text for Internal Deliverables
+                                                                         % notation: IDx.x V{LGversion}
+\centerline{\LiveGovLogo \hfill \textbf{\Large \bf{Dx.x - V0} \normalsize }} %header text for External Deliverables
+                                                                        % notation: Dx.x V{LGversion}
+\vspace{-5pt} \rule{\landscapewidth}{0.4pt} \\
+\rule{0pt}{\landscapeheight} \\
+%\rule{\landscapewidth}{0.4pt} \\
+\centerline{Page \thepage\ }  % footer text
+} } } } }
+
+%--------------------------------------------------------------------------------------------------------------%
+\usepackage{appendix}
+\pretolerance=10000 % prevent overflow lines for $math$ elements
+
+\begin{document}
+
+% add a \LGaddhistory{version}{date}{reason}{revised by} for each new
+% version
+\begin{LGhistory}
+\LGaddhistory{01}{2013-10-14}{Outline}{Heinrich Hartmann}
+\LGaddhistory{02}{2014-01-06}{Added section on topic modeling}{Christoph Kling}
+\LGaddhistory{03}{2014-01-07}{Revised Outline}{Heinrich Hartmann}
+
+\end{LGhistory}
+
+
+\newcommand{\LGaddauthorNoPhone}[3]{\hline  #1 &  #2 & %
+   \parbox{3em}{E-mail:} \small #3 \\
+}
+
+% add a
+% \LGaddauthor{Partner}{Name}{Telephone}{Fax}{Email} for each author
+\begin{LGauthors}
+
+\LGaddauthor{UKob}{Heinrich Hartmann}{+49 261 287 2759}%
+{+49 261 287 100 2759}{\small hartmann@uni-koblenz.de}
+
+\LGaddauthor{UKob}{Christoph Schaefer}{+49 261 287 2786 }%
+{+49 261 287 100 2786}{\small chrisschaefer@uni-koblenz.de}
+
+\LGaddauthor{UKob}{Christoph Kling}{+49 261 287 2702 }%
+{+49 261 287 100 2702}{\small ckling@uni-koblenz.de}
+
+\LGaddauthorNoPhone{MTS}{Laura Niittyl\"a}%
+{\small Laura.Niittyla@mattersoft.fi}
+
+\end{LGauthors}
+
+
+
+\begin{LGExecutiveSummary}
+  \vspace{10pt} 
+  This deliverable describes the Mobile Sensor Mining Component.
+
+  The deliverable is accompanied with source code of the components in
+  Java, API documentation (javadoc), and pre-compiled packages for
+  direct installation and testing on mobile devices.
+
+\end{LGExecutiveSummary}
+
+
+% add a \LGaddabbreviation{ABBR}{Explanation} for each abbreviation
+\begin{LGAbbreviations}
+%\LGaddabbreviation{LG}{Live+Gov}
+
+
+\LGaddabbreviation{\textbf{AIDL}}
+{Android Interface Description Language}
+
+\LGaddabbreviation{\textbf{AJAX}}
+{Asynchronous JavaScript and XML}
+
+\LGaddabbreviation{\textbf{ALC}}
+{Attribute Language with Complement}
+
+\LGaddabbreviation{\textbf{API}}
+{Application Programming Interface}
+
+\LGaddabbreviation{\textbf{GeSA}}
+{Geographical Semantic Analysis}
+
+\LGaddabbreviation{\textbf{GPS}}
+{Global Positioning System}
+
+\LGaddabbreviation{\textbf{GSM}}
+{Global System for Mobile Communications}
+
+\LGaddabbreviation{\textbf{HTML}}
+{HyperText Markup Language}
+
+\LGaddabbreviation{\textbf{HTTP}}
+{Hypertext Transfer Protocol}
+
+\LGaddabbreviation{\textbf{ID}}
+{Identifier}
+
+\LGaddabbreviation{\textbf{IEEE 802.11}}
+{see WIFI, WLAN}
+
+\LGaddabbreviation{\textbf{JSON}}
+{JavaScript Object Notation}
+
+\LGaddabbreviation{\textbf{LAN}}
+{Local Area Network}
+
+\LGaddabbreviation{\textbf{REST}}
+{Representational State Transfer}
+
+\LGaddabbreviation{\textbf{RF-ID}}
+{Radio-Frequency Identification}
+
+\LGaddabbreviation{\textbf{SDCF}}
+{Sensor Data Collection Framework}
+
+\LGaddabbreviation{\textbf{SQL}}
+{Structured Query Language}
+
+\LGaddabbreviation{\textbf{SVM}}
+{Support Vector Machine}
+
+\LGaddabbreviation{\textbf{TBox}}
+{Terminological Box}
+
+\LGaddabbreviation{\textbf{UI}}
+{User Interface}
+
+\LGaddabbreviation{\textbf{URL}}
+{Uniform Resource Locator}
+
+\LGaddabbreviation{\textbf{UUID}}
+{Universal Unique Device Identifier}
+
+\LGaddabbreviation{\textbf{WP}}
+{Work Package}
+
+\LGaddabbreviation{\textbf{WIFI}}
+{Wireless Fidelity (IEEE 802.11), WLAN}
+
+\LGaddabbreviation{\textbf{WLAN}}
+{Wireless Local Area Network}
+
+\LGaddabbreviation{\textbf{XML}}
+{Extensible Markup Language}
+
+\LGaddabbreviation{~\\}
+{~~~}
+
+\end{LGAbbreviations}
+
+% add a \LGaddterm{Term}{Explanation} for each entry of the glossary
+%\begin{LGGlossary}
+%\LGaddterm{Term}{Definition text here}
+%\LGaddterm{Term2}{Definition text here}
+%\end{LGGlossary}
+
+\setcounter{tocdepth}{1}
+
+% add this for a table of contents
+\LGTOC
+
+\newpage
+\newcommand{\todo}[2]{\textcolor{magenta}{#1: #2}}
+%\newcommand{\todo}[2]{}
+
+\chapter{Introduction}
+\label{chap:Introduction}
+
+\clearpage
+
+% Topic Models
+\input{sections/TopicModels.tex}
+
+\bibliography{D1-2}
+
+\end{document}
