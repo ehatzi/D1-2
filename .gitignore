@@ -1,0 +1,13 @@
+.svn/
+auto/
+
+*.aux
+*.log
+*.out
+*.pdf
+*.lof
+*.lot
+*.toc
+*.zip
+*~
+.#*
