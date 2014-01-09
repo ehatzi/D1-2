@@ -31,9 +31,9 @@
 %\LGnature{$<$ Report $|$ Prototype $|$ Demonstrator $|$ Other $>$}
 
 %\LGapproved % activate only if approved
-\LGfinal
+\LGdraft
 
-\LGversion{12}
+\LGversion{Alpha 0.1}
 %\LGstaffmonths{Resources spent on the deliverable}
 
 %\LGdistribution{WP leaders, PMB members, European Commission}
@@ -204,14 +204,13 @@
 \label{chap:Introduction}
 \todo{HH}{Write Introduction}
 
-\section{From the DoW}
-\subsection{Description of Deliverable D1.2}
+\section{Description of Deliverable D1.2}
 Sensor Data App with Mining Functionality: This deliverable will provide the
 extended version of the data capturing prototype for mobile devices, with
 implemented reality mining methods and optimized communication interfaces for
 result transmissions for to the application server.
 
-\subsection{Task Descriptions}
+\section{Task Descriptions}
 \begin{itemize}
 \item[T1.1] {\bf Sensor and user input data capturing} \\
   This task will first define a taxonomy of classifications that are useful to
@@ -248,7 +247,79 @@ result transmissions for to the application server.
 
 
 \clearpage
-\chapter{Topic Models}
+\chapter{Sensor Collection Service}
+\todo{HH}{Add content}
+
+Explain the improvements of the sensor collection service since D1.1
+
+In particular cover the topics:
+\begin{enumerate}
+\item Improved Architecture Description
+\item Inspection Front End
+\item New Sensor Transfer File Format
+\item New Streaming API
+\item Integration Loging and Heartbeating into Upload Servlet
+\item Data Collection event in Koblenz
+\end{enumerate}
+
+\chapter{Reality Mining Methods}
+
+\section{Human Activity Recognition}
+\todo{HH}{Add content.}
+
+\subsection{Related Work}
+Explain common approaches to human activity recognition, evaluation
+methods and resulted quality.
+
+\subsection{Component Description}
+Explain our own implementation:
+
+\begin{enumerate}
+\item Architecture Description (Class diagrams, DB Schemes)
+\item Decision Tree classifier
+\item PCA-SVM based classifier
+\end{enumerate}
+
+\subsection{Cross-Platform Strategy}
+Explain problems with Titanium framework.
+
+Android component runs on Blackberry. 
+
+Implement HAR as SAAS. Write client app for iOS.
+
+\subsection{Evaluation}
+Comparison of our classifier with literature on the basis of external
+data sets.
+
+\section{Service Line Detection}
+\todo{CS}{Add content.}
+
+\subsection{Related Work}
+Explain common approaches to SLD and related problems.
+
+\subsection{Component Description}
+Explain implementation.
+
+\subsection{Evaluation}
+How did we test the quality of the classifier.
+
+\section{Traffic Jam Detection}
+\todo{MTS}{Add content.}
+
+\subsection{Related Work}
+Explain common approaches to Traffic Jam detection
+
+\subsection{Component Description}
+Explain implementation.
+
+\subsection{Evaluation}
+How was the quality of the jam detection classifier assessed?
+
+\section{Distributed Geo-Matching}
+\todo{DJ}{Add content.}
+\input{sections/DistributedGeoMatching}
+
+\section{Geographic Topic Analysis}
 \input{sections/TopicModels}
 
 \bibliography{D1-2}

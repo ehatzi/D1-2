@@ -284,6 +284,7 @@ Commission Services).)
 \def\@LGstatus{$<$ Draft $|$ PMB Final Draft $|$ Approved $>$}
 \def\LGapproved{\def\@LGstatus{Approved}}
 \def\LGfinal{\def\@LGstatus{PMB Final Draft}}
+\def\LGdraft{\def\@LGstatus{Draft}}
 
 
 \def\@LGversion{00}
