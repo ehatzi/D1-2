@@ -293,9 +293,12 @@ Comparison of our classifier with literature on the basis of external
 data sets.
 
 \section{Service Line Detection}
-\todo{CS}{Add content.}
-%for reduzing the size, set the width to 0.22\textwid
-\begin{figure}[]
+
+One part of the user contextualization is the service line detection. The aim of this component is to recognize if a citizen uses public transport within the HSL area in Helsinki. If such a usage is detected, the right service line id with its direction and the further itinerary will be determined. Based on this information it is possible to solve higher level tasks like traffic jam detection, connecting train recommendation, or network utilization analysis.
+
+The service line detection is implemented as a server side mining component which provides a REST API for answering user queries in real time. For long term evaluations all API calls are recorded and send to the L+G Service Center on a daily bases. Due to the seamless integration into the L+G ecosystem, where each user gets an universal unique id, all received tracks are personalized and can be combined with additional information coming from other components. In a later analysis, the service line detection results can be augmented with the low level human activity recognition data of the same user to gain a better insight into the users behavior.
+
+\begin{figure}[ht]
 \centering
 \subfigure[]{
   \frame{\includegraphics[width=0.3\textwidth,natwidth=556.19,natheight=432]{img/SLD/track.pdf}}
@@ -330,8 +333,19 @@ data sets.
 \caption{
 The various input data for the HSL service line detection.
 }
-\label{fig:netmaps}
+\label{fig:SLD}
 \end{figure}
+
+Assigning a trajectory to a specific service line requires the access to suitable background knowledge. In the Helsinki case it is two fold:
+First of all, the system is fed with all HSL public transportation schedules and associated geographic information. By means of this dataset the theoretical position of every vehicle at any point of time can be calculated. By only including static time tables, actual schedule deviations stay disregarded. This gap is closed by the HSL Live API, which is the second data source the service line detection relies on. With this API, the actual positions of some vehicles can be determined. Especially trams are tracked in realtime and can be accessed via this interface.  Unfortunately, the vast majority of vehicles, such as buses, have not yet been integrated. Lacking a complete realtime coverage is why still some uncertainty remains in the overall system. Therefore, the main challenge is to combine both kinds of data to archive the best possible performance.
+
+Just as the background data, the classification algorithm is also two-stage. Given a user trajectory containing a small set of GPS coordinates with timestamps (Figure \ref{fig:track}), in a first step is checked if the most actual timestamp is near realtime. If so, the HSL Live API is called in order to find all vehicles which are currently around the user (Figure \ref{fig:realtime}). Service lines found below a certain distance to the user are scored with a high probability to be the true line belonging to the given track.
+
+In a second step, each coordinate of the given track is compared to the static route data (Figure \ref{fig:static}) obtained from the time tables. Unfortunately, the used public transportation schedules only contain exact arrival times for each stop, but don't provide any time date for the path between them. Since this data is to sparse to do reliable service line detection, all paths are rasterized evenly (Figure \ref{fig:interpolatedCoords}) and the corresponding time for each intermediate part is interpolated (Figure \ref{fig:interpolatedCoordsWithTimes}). This ensures that no route section falls through the cracks when executing a simple distance query in time and space. Figure \ref{fig:combined} shows the combined view of all data used for the HSL service line detection.
+
+The result of the algorithm is the one service line which has the highest score due to the Live API and/or the smallest distance to the given set of coordinates. During the a testing phase, the optimal values of all involved parameters like distance thresholds, time and space raster sizes, and the individual scoring weights have to be learned. As one outcome of the Helsinki field trial, we expect to find a good heuristic how to setup the various ingredients of the algorithm.
+
+
 \subsection{Related Work}
 Explain common approaches to SLD and related problems.
 
