@@ -19,7 +19,7 @@ The amount of data produced by the different types of sensors can exceed the pro
 
 \subsection{Problem of Matching Physical and Social Sensor Data}\label{sec:problem}
 
-In order to find the bus or train a message is related to, the data measured by the physical sensors have to be processed first. In this context, the relevant data consists of the longitude and latitude measured by the GPS sensors of the vehicles. Before transmitting these data, they have to be extended by the unique id of the current vehicle and a timestamp to keep track of the chronological order. The set of all possible position is defined as $Pos$ in equation (\ref{eqn:Pos}).
+In order to find the bus or train a message is related to, the data measured by the physical sensors have to be processed first. In this context, the relevant data consists of the longitude and latitude ($\mathbb{R} \times \mathbb{R}$) measured by the GPS sensors of the vehicles. Before transmitting these data, they have to be extended by the unique id ($V_{id}$) of the current vehicle and a timestamp ($T$) to keep track of the chronological order. The set of all possible position is defined as $Pos$ in equation (\ref{eqn:Pos}).
 
 \vspace*{-2\baselineskip}
 \begin{eqnarray}
@@ -64,7 +64,7 @@ In order to relate a message $m$ to a bus or train, the vehicle must be determin
  &&rnn: Mes \rightarrow Pos \cup \{\texttt{null}\} \textrm{ with}\label{eqn:rnn}\\
  &&rnn((t,lon_m,lat_m,cont)):= (v_{Id},t,lon_v,lat_v)\nonumber\\
  &&\hspace*{1cm}\textrm{if } allTraj(v_{Id})(t)=(lon_v,lat_v) \wedge dist((lon_m,lat_m),(lon_v,lat_v))\leq maxDist \wedge \nonumber\\
- &&\hspace*{1cm}\not\exists v_{Id}' \in V_{id}: dist((lon_m,lat_m),allTraj(v_{Id}')(t))< dist((lon_m,lat_m),allTraj(vId)(t))\nonumber\\
+ &&\hspace*{1cm}\not\exists v_{Id}' \in V_{id}: dist((lon_m,lat_m),allTraj(v_{Id}')(t))< dist((lon_m,lat_m),allTraj(v_{Id})(t))\nonumber\\
  &&rnn((t,lon_m,lat_m,cont)):= \texttt{null}\nonumber\\
  &&\hspace*{1cm}\textrm{otherwise}\nonumber
 \end{eqnarray}
