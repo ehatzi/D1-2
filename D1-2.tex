@@ -284,6 +284,59 @@ Explain our own implementation:
 \item PCA-SVM based classifier
 \end{enumerate}
 
+\subsubsection{SVM based classifier}
+
+A popular algorithm to train a binary classification model for mapping features to activities is the Support Vector Machines (SVMs). SVMs are known for their ability in smoothly generalizing and coping efficiently with high-dimensionality pattern recognition problems. They define a hypothesis space that includes all the possible linear separations of the data (see Fig.~\ref{fig:svm_hypothesisSpace}) and they choose the one that maximizes the margin between the two classes (Fig.~\ref{fig:svm_margin}). 
+
+
+
+\begin{figure}[h]
+\centering
+  \includegraphics[width=0.4\textwidth]{img/svms/Svms_hypothesisSpace.pdf}
+  \caption{Left: Hypothesis space including all linear separations. Right: The selected hypothesis maximizes the margin.}
+  \label{fig:svm_hypothesisSpace}
+\end{figure}
+
+
+\begin{figure}[h]
+\centering
+  \includegraphics[width=0.5\textwidth]{img/svms/Svm_Maxmargin.pdf}
+  \caption{Maximization of the margin}
+  \label{fig:svm_margin}
+\end{figure}
+
+\noindent The hyperplane that optimally separates the positive and the negative class (i.e. maximizes the hyperplane) can be described by $\mathbf{w\cdot x + b = 0}$, where $\mathbf{w}$ is normal to the hyperplane and $\frac{b}{\parallel\mathbf{w}\parallel}$ is the perpendicular distance from the hyperplane to the origin (Fig.~\ref{fig:svm_wb}). The optimal hyperplane can be obtained by solving the following Quadratic Programming optimization problem:
+
+\begin{equation}\label{Eq:svmQP0}
+\min \frac{1}{2}\parallel\mathbf{w}\parallel \quad \text{s.t.} \quad y_i(\mathbf{w}\cdot x_i + b) -1 \ge 0 \quad \forall i
+\end{equation}
+
+In order to relax the constraints of Eq.~\ref{Eq:svmQP0} and allow for some misclassified points a slack variable $\xi_i, i=1,\ldots,L$ is introduced which modifies Eq.~\ref{Eq:svmQP0} into:
+
+\begin{equation}\label{Eq:svmQPxi}
+\min \frac{1}{2}\parallel\mathbf{w}\parallel + C\sum_{i=1}^{L}\xi_i \quad \text{s.t.} \quad y_i(\mathbf{w}\cdot x_i + b) -1 +\xi_i \ge 0 \quad \forall i
+\end{equation}
+
+\noindent where the parameter $C$ controls the trade-off between the slack variable penalty and the size of the margin. In the testing phase, in order to classify an unseen example $x_t$, its distance to the hyperplane is calculated using the formula $\mathbf{w}\cdot x_t + b$. This distance 
+
+
+\begin{figure}[h]
+\centering
+  \includegraphics[width=0.4\textwidth]{img/svms/Svms_wb.pdf}
+  \caption{Maximization of the margin}
+  \label{fig:svm_wb}
+\end{figure}
+
+An SVM model is trained on the previously extracted features in order to learn the properties that define the examined activity. The models are trained using the one versus all (OVA) technique, i.e. all positive examples of the specific activity versus all negative examples. The classification model learns the hyperplane that best separates the space of the positive and negative samples, by maximizing the margin between the two classes. Applying the kernel trick, we can map the features to a higher dimension and at the same time consider the cases where the classes are not linearly separable. For example, in the case of a linear kernel the model considers linear separation of the data, while in the case of an RBF kernel the hyperplane is a hypersphere. For any kernel $K(x,y)$, the classification model can be represented by a vector $\textbf{w}$ (i.e. the model parameters), a bias scalar $b$ and the support vectors $\mathbf{SV}_j, j=1,\ldots,N_{SV}$. For an activity $a$ and a test window $i$, which corresponds to a feature vector $\textbf{f}_i$, a confidence score is extracted by computing its distance to the hyperplane of the model for the activity $a$:
+
+\begin{equation}\label{Eq:SVMdecision}
+  confidence(i,a) = \mathbf{w}_a*\sum_{j=1}^{N_{SV}}{K(\mathbf{SV}_j,\mathbf{f}_i)}+b_a
+\end{equation}
+
+The distance of a vector from the hyperplane indicates our confidence that during the examined window, the user performs the specified activity. High positive values of this score increase our confidence that this window belongs to the positive class while high negative values provide strong confidence that the performed activity is not the examined one. 
+
+%The fact that each model can be represented by a single vector and a scalar and that the testing process is essentially a vector multiplication, renders SVMs the best solution for a real time classification framework. This allows for storing the information about all the models in the phone memory, while testing is computationally very efficient, making it possible for the image classification algorithm to run entirely on a mobile phone.
+
 \subsection{Cross-Platform Strategy}
 Explain problems with Titanium framework.
 
